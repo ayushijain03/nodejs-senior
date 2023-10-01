@@ -12,4 +12,19 @@ export abstract class Base {
     description: 'Date and time when the object was updated last time.',
   })
   updatedAt: Date;
+
+  @Field({
+    description: 'Holds the account activation code',
+  })
+  activationCode: string;
+
+  @Field({
+    description: 'Stores true if the account is verified otherwise false',
+  })
+  isVerified: boolean;
+
+  @Field({
+    description: 'Holds the refresh token',
+  })
+  refreshToken: string;
 }

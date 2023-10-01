@@ -10,7 +10,18 @@ type Customer {
 
   """Date and time when the object was updated last time."""
   updatedAt: Timestamp!
+
+  """Holds the account activation code"""
+  activationCode: String!
+
+  """Stores true if the account is verified otherwise false"""
+  isVerified: Boolean!
+
+  """Holds the refresh token"""
+  refreshToken: String!
   email: String!
+  password: String!
+  role: Role!
 }
 
 """
@@ -18,8 +29,14 @@ type Customer {
 """
 scalar Timestamp
 
+enum Role {
+  USER
+  ADMIN
+}
+
 type Query {
   customers(data: GetCustomerInput!): [Customer!]!
+  getCustomer(data: String!): Customer!
 }
 
 input GetCustomerInput {
@@ -34,4 +51,26 @@ input WhereCustomerInput {
   email: String
   createdAt: Timestamp
   updatedAt: Timestamp
+}
+
+type Mutation {
+  createCustomer(data: CreateCustomerInput!): Customer!
+  removeCustomer(data: String!): Customer!
+  updateCustomer(data: String!, updateCustomerInput: UpdateCustomerInput!): Customer!
+}
+
+input CreateCustomerInput {
+  email: String!
+  password: String!
+  role: Role
+  activationCode: String
+}
+
+input UpdateCustomerInput {
+  email: String
+  password: String
+  role: Role
+  activationCode: String
+  isVerified: Boolean
+  refreshToken: String
 }

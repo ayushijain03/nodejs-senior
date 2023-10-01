@@ -1,5 +1,11 @@
-import { Field, InputType, Int } from '@nestjs/graphql';
+import { Field, InputType, Int, registerEnumType } from '@nestjs/graphql';
+import { IsEmail, IsNotEmpty, IsString } from 'class-validator';
 import { Prisma } from '@prisma/client';
+import { Role } from '@prisma/client';
+
+registerEnumType(Role, {
+  name: 'Role',
+});
 
 @InputType()
 export class WhereCustomerInput {
@@ -29,4 +35,57 @@ export class GetCustomerInput {
 
   @Field(() => WhereCustomerInput, { nullable: true })
   where: WhereCustomerInput;
+}
+
+@InputType()
+export class CreateCustomerInput {
+  @Field(() => String)
+  @IsNotEmpty()
+  @IsEmail({}, { message: 'Invalid email format' })
+  @IsString()
+  email: string;
+
+  @Field(() => String)
+  @IsNotEmpty()
+  @IsString()
+  password: string;
+
+  @Field(() => Role, { nullable: true })
+  role?: Role;
+
+  @Field(() => String, { nullable: true })
+  activationCode?: string;
+}
+
+@InputType()
+export class GetCustomerByIdOrEmail {
+  @Field(() => String, { nullable: true })
+  @IsEmail({}, { message: 'Invalid email format' })
+  @IsString()
+  email?: string;
+
+  @Field(() => String, { nullable: true })
+  @IsString()
+  id?: string;
+}
+
+@InputType()
+export class UpdateCustomerInput {
+  @Field(() => String, { nullable: true })
+  email?: string;
+
+  @Field(() => String, { nullable: true })
+  password?: string;
+
+  @Field(() => Role, { nullable: true })
+  role?: Role;
+
+  @Field(() => String, { nullable: true })
+  activationCode?: string;
+
+  @Field(() => Boolean, { nullable: true })
+  isVerified?: boolean;
+
+  @Field(() => String, { nullable: true })
+  refreshToken?: string;
 }

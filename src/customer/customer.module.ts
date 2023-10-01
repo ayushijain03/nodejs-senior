@@ -7,5 +7,6 @@ import { CustomerResolver } from './customer.resolver';
   imports: [],
   controllers: [],
   providers: [CustomerService, PrismaService, CustomerResolver],
+  exports: [CustomerService],
 })
 export class CustomerModule {}
